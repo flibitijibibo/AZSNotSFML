@@ -1,0 +1,17 @@
+This is NotSFML, a reimplementation of SFML.Net 1.6 and Tao.OpenGl as used by
+Atom Zombie Smasher.
+
+License information can be found at the top of NotSFML.cs.
+
+Usage
+-----
+This file is designed to be statically linked into your C# project. It is NOT
+intended to be a standalone DLL or a recreation of the SFML.Net libraries. Add
+NotSFML.cs into your project and link to SDL2#/OpenAL# instead of the SFML libs,
+and it should Just Work(TM) assuming you use the exact same APIs as AZS.
+
+atomstb is simply a DLL version of Sean Barrett's single-file libraries:
+
+https://github.com/nothings/stb
+
+It should build out of the box on any C compiler made since Visual Studio 6.
