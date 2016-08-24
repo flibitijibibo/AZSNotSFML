@@ -228,7 +228,7 @@ namespace SFML.Window
 		}
 
 		[DllImport("atomstb", CallingConvention = CallingConvention.Cdecl)]
-		public static extern void stbtt_BakeFontBitmap(
+		public static extern int stbtt_BakeFontBitmap(
 			byte[] buf,
 			int offset,
 			float pixel_height,
@@ -237,7 +237,7 @@ namespace SFML.Window
 			int ph,
 			int first_char,
 			int num_chars,
-			stbtt_bakedchar[] chardata
+			IntPtr chardata
 		);
 
 
@@ -273,7 +273,7 @@ namespace SFML.Window
 		);
 
 
-		[DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("msvcr100.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void free(IntPtr mem);
 	}
 
@@ -1076,12 +1076,6 @@ namespace SFML.Graphics
 		public float X;
 		public float Y;
 
-		public Vector2()
-		{
-			X = 0;
-			Y = 0;
-		}
-
 		public Vector2(float a, float b)
 		{
 			X = a;
@@ -1109,13 +1103,6 @@ namespace SFML.Graphics
 		public float X;
 		public float Y;
 		public float Z;
-
-		public Vector3()
-		{
-			X = 0;
-			Y = 0;
-			Z = 0;
-		}
 
 		public Vector3(float a, float b, float c)
 		{
@@ -1562,8 +1549,10 @@ namespace SFML.Graphics
 			byte[] ttf = File.ReadAllBytes(name);
 			byte[] img = new byte[IMG_SIZE * IMG_SIZE];
 			byte[] imgRGBA = new byte[IMG_SIZE * IMG_SIZE * 4];
-			GCHandle handle = GCHandle.Alloc(imgRGBA, GCHandleType.Pinned);
-			IntPtr pix = handle.AddrOfPinnedObject();
+			GCHandle imgHandle = GCHandle.Alloc(imgRGBA, GCHandleType.Pinned);
+			IntPtr pix = imgHandle.AddrOfPinnedObject();
+			GCHandle glyphHandle = GCHandle.Alloc(ASCIIGlyphs, GCHandleType.Pinned);
+			IntPtr glyph = glyphHandle.AddrOfPinnedObject();
 			for (int i = 1; i >= 0; i -= 1)
 			{
 				stb.stbtt_BakeFontBitmap(
@@ -1575,7 +1564,7 @@ namespace SFML.Graphics
 					IMG_SIZE,
 					32 + (128 * i),
 					96,
-					ASCIIGlyphs
+					glyph
 				);
 				if (i == 1)
 				{
@@ -1600,7 +1589,8 @@ namespace SFML.Graphics
 					pix
 				);
 			}
-			handle.Free();
+			glyphHandle.Free();
+			imgHandle.Free();
 			imgRGBA = null;
 			img = null;
 			ttf = null;
