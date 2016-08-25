@@ -1684,7 +1684,6 @@ namespace SFML.Graphics
 				if (!string.IsNullOrEmpty(currentString))
 				{
 					float curWidth = 0.0f;
-					float curHeight = 0.0f;
 					float factor = size / (float) font.Size;
 
 					for (int i = 0; i < currentString.Length; i += 1)
@@ -1712,13 +1711,11 @@ namespace SFML.Graphics
 						else if (sym == '\v')
 						{
 							Height += size * 4;
-							curHeight = 0;
 							continue;
 						}
 						else if (sym == '\n')
 						{
 							Height += size;
-							curHeight = 0.0f;
 							if (curWidth > Width)
 							{
 								Width = curWidth;
@@ -1738,21 +1735,15 @@ namespace SFML.Graphics
 						}
 
 						curWidth += glyph.xadvance * factor;
-						float charHeight = (font.Size + (glyph.y1 - glyph.y0)) * factor;
-						if (charHeight > curHeight)
-						{
-							curHeight = charHeight;
-						}
 					}
 
 					if (curWidth > Width)
 					{
 						Width += curWidth;
 					}
-					Height += curHeight;
+					Height += size;
 				}
-				// FIXME: WTF is this 1 / Height hack doing?! -flibit
-				bounds = new FloatRect(0.0f, 1.0f / Height, Width, Height);
+				bounds = new FloatRect(0.0f, 0.0f, Width, Height);
 			}
 			return new FloatRect(
 				(bounds.X1 - Center.X) * Scale.X + Position.X,
