@@ -1751,8 +1751,8 @@ namespace SFML.Graphics
 					}
 					Height += curHeight;
 				}
-				// FIXME: WTF is this Height / 4 hack doing?! -flibit
-				bounds = new FloatRect(0.0f, Height / 4.0f, Width, Height);
+				// FIXME: WTF is this 1 / Height hack doing?! -flibit
+				bounds = new FloatRect(0.0f, 1.0f / Height, Width, Height);
 			}
 			return new FloatRect(
 				(bounds.X1 - Center.X) * Scale.X + Position.X,
