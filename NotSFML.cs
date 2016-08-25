@@ -349,11 +349,15 @@ namespace SFML.Window
 		public event EventHandler<JoyMoveEventArgs> JoyMoved;
 		public event EventHandler<KeyEventArgs> KeyPressed;
 		public event EventHandler Closed;
+		public event EventHandler LostFocus;
+		public event EventHandler GainedFocus;
 
 		private IntPtr window;
 		private IntPtr context;
 		private bool run;
 		private uint lastTicks;
+		private uint lastDisplay;
+		private uint fpsLimit;
 
 		public Window(VideoMode mode, string title, Styles style)
 		{
@@ -402,6 +406,8 @@ namespace SFML.Window
 			}
 			run = true;
 			lastTicks = 0;
+			lastDisplay = 0;
+			fpsLimit = 0;
 
 			Width = mode.Width;
 			Height = mode.Height;
@@ -501,6 +507,13 @@ namespace SFML.Window
 
 		public void Display()
 		{
+			uint ticks = SDL.SDL_GetTicks();
+			int diff = (int) fpsLimit - (int) (ticks - lastDisplay);
+			if (fpsLimit > 0 && diff > 0)
+			{
+				SDL.SDL_Delay((uint) diff);
+			}
+			lastDisplay = ticks;
 			SDL.SDL_GL_SwapWindow(window);
 		}
 
@@ -542,7 +555,7 @@ namespace SFML.Window
 
 		public void SetFramerateLimit(uint frames)
 		{
-			Console.WriteLine("UNIMPLEMENTED: SetFramerateLimit");
+			fpsLimit = 1000 / frames;
 		}
 
 		public void Draw(Drawable item)
@@ -605,10 +618,18 @@ namespace SFML.Window
 					if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED)
 					{
 						SDL.SDL_DisableScreenSaver();
+						if (LostFocus != null)
+						{
+							LostFocus(this, EventArgs.Empty);
+						}
 					}
 					else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST)
 					{
 						SDL.SDL_EnableScreenSaver();
+						if (GainedFocus != null)
+						{
+							GainedFocus(this, EventArgs.Empty);
+						}
 					}
 					else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_ENTER)
 					{
