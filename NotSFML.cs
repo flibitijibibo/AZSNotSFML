@@ -1728,6 +1728,10 @@ namespace SFML.Graphics
 							// Ahem, Win32 newlines...
 							continue;
 						}
+						else if (sym == 8217) // ASZ assets fix
+						{
+							glyph = font.ASCIIGlyphs['\'' - 32];
+						}
 						else
 						{
 							Console.WriteLine("Missing char? " + sym.ToString());
@@ -1801,6 +1805,10 @@ namespace SFML.Graphics
 					// Ahem, Win32 newlines...
 					continue;
 				}
+				else if (sym == 8217) // ASZ assets fix
+				{
+					glyph = font.ASCIIGlyphs['\'' - 32];
+				}
 				else
 				{
 					Console.WriteLine("Missing char? " + sym.ToString());
@@ -1863,6 +1871,10 @@ namespace SFML.Graphics
 				{
 					// Ahem, Win32 newlines...
 					continue;
+				}
+				else if (sym == 8217) // ASZ assets fix
+				{
+					glyph = font.ASCIIGlyphs['\'' - 32];
 				}
 				else
 				{
