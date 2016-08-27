@@ -618,17 +618,17 @@ namespace SFML.Window
 					if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED)
 					{
 						SDL.SDL_DisableScreenSaver();
-						if (LostFocus != null)
+						if (GainedFocus != null)
 						{
-							LostFocus(this, EventArgs.Empty);
+							GainedFocus(this, EventArgs.Empty);
 						}
 					}
 					else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST)
 					{
 						SDL.SDL_EnableScreenSaver();
-						if (GainedFocus != null)
+						if (LostFocus != null)
 						{
-							GainedFocus(this, EventArgs.Empty);
+							LostFocus(this, EventArgs.Empty);
 						}
 					}
 					else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_ENTER)
