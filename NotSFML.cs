@@ -1496,6 +1496,7 @@ namespace SFML.Graphics
 			if (img == null)
 			{
 				Console.WriteLine("NULL IMAGE");
+				return; // Should only be loading mouse cursor...? -flibit
 			}
 			float left = (SubRect.X1 / (float) Image.Width);
 			float top = (SubRect.Y1 / (float) Image.Height);
