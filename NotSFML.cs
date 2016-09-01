@@ -367,6 +367,13 @@ namespace SFML.Window
 			{
 				flags |= SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP;
 			}
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_RED_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_GREEN_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_BLUE_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_ALPHA_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DEPTH_SIZE, 24);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_STENCIL_SIZE, 8);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DOUBLEBUFFER, 1);
 			window = SDL.SDL_CreateWindow(
 				title,
 				loc,
@@ -581,7 +588,10 @@ namespace SFML.Window
 						if (!Input.keys.Contains(key))
 						{
 							Input.keys.Add(key);
-							KeyPressed(this, new KeyEventArgs(key));
+							if (KeyPressed != null)
+							{
+								KeyPressed(this, new KeyEventArgs(key));
+							}
 						}
 					}
 				}
