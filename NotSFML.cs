@@ -1669,7 +1669,8 @@ namespace SFML.Graphics
 
 		private bool needsUpdate;
 
-		internal FloatRect bounds;
+		private float Width = 0.0f;
+		private float Height = 0.0f;
 
 		public String2D()
 		{
@@ -1690,8 +1691,8 @@ namespace SFML.Graphics
 			if (needsUpdate)
 			{
 				needsUpdate = false;
-				float Width = 0.0f;
-				float Height = 0.0f;
+				Width = 0.0f;
+				Height = 0.0f;
 				if (!string.IsNullOrEmpty(currentString))
 				{
 					float curWidth = 0.0f;
@@ -1758,13 +1759,12 @@ namespace SFML.Graphics
 					}
 					Height += size;
 				}
-				bounds = new FloatRect(0.0f, 0.0f, Width, Height);
 			}
 			return new FloatRect(
-				(bounds.X1 - Center.X) * Scale.X + Position.X,
-				(bounds.Y1 - Center.Y) * Scale.Y + Position.Y,
-				(bounds.X2 - Center.X) * Scale.X + Position.X,
-				(bounds.Y2 - Center.Y) * Scale.Y + Position.Y
+				-Center.X * Scale.X + Position.X,
+				-Center.Y * Scale.Y + Position.Y,
+				(Width - Center.X) * Scale.X + Position.X,
+				(Height - Center.Y) * Scale.Y + Position.Y
 			);
 		}
 
